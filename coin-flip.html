@@ -1,0 +1,118 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Coin Flip Game</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .btn {
+      padding: 8px 15px;
+      background-color: #0099ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      margin: 5px;
+      display: inline-block;
+    }
+    .coin-container {
+      margin-top: 30px;
+    }
+    .coin {
+      width: 100px;
+      height: 100px;
+      border: 2px solid #333;
+      border-radius: 50%;
+      margin: 20px auto;
+      background: gold;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const currentUser = localStorage.getItem("currentUser");
+    if (!currentUser) {
+      alert("Please login first!");
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <header>
+    <h1>Coin Flip</h1>
+    <div style="text-align: right; margin-bottom: 10px;">
+      <span id="coinDisplay" style="font-weight: bold;">Coins: 0</span>
+      <a href="deposit.html" class="btn">Deposit Coins</a>
+      <a href="#" onclick="logout()" class="btn">Logout</a>
+    </div>
+    <a href="game.html" class="btn">Back</a>
+  </header>
+
+  <main class="coin-container">
+    <div class="coin" id="coin"></div>
+
+    <div class="bet-controls">
+      <label for="betAmount">Enter Bet Amount (Min 20):</label><br />
+      <input type="number" id="betAmount" min="20" value="20" /><br /><br />
+
+      <button onclick="flipCoin('heads')">Heads (1x)</button>
+      <button onclick="flipCoin('tails')">Tails (2x)</button>
+      <p id="result"></p>
+    </div>
+  </main>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("currentUser");
+      alert("Logged out successfully!");
+      window.location.href = "index.html";
+    }
+
+    function updateCoins() {
+      const username = localStorage.getItem("currentUser");
+      const userData = JSON.parse(localStorage.getItem(username));
+      if (userData) {
+        document.getElementById("coinDisplay").innerText = "Coins: " + userData.coins;
+      }
+    }
+    setInterval(updateCoins, 1000);
+    updateCoins();
+
+    function flipCoin(choice) {
+      const username = localStorage.getItem("currentUser");
+      let userData = JSON.parse(localStorage.getItem(username));
+      const bet = parseInt(document.getElementById("betAmount").value);
+
+      if (isNaN(bet) || bet < 20) {
+        alert("Minimum bet is 20 coins.");
+        return;
+      }
+
+      if (userData.coins < bet) {
+        alert("Not enough coins! Please deposit.");
+        window.location.href = "deposit.html";
+        return;
+      }
+
+      const result = Math.random() < 0.5 ? 'heads' : 'tails';
+      const win = (choice === result);
+
+      if (win) {
+        const reward = choice === 'heads' ? bet : bet * 2;
+        userData.coins += reward;
+        document.getElementById("result").innerText = "You won! Result: " + result;
+      } else {
+        userData.coins -= bet;
+        document.getElementById("result").innerText = "You lost. Result: " + result;
+      }
+
+      localStorage.setItem(username, JSON.stringify(userData));
+      updateCoins();
+    }
+  </script>
+</body>
+</html>

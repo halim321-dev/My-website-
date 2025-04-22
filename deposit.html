@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Deposit Coins</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .deposit-option {
+      margin: 20px;
+      padding: 10px 20px;
+      background-color: #00cc99;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .deposit-option:hover {
+      background-color: #009977;
+    }
+    .back-btn {
+      background: #555;
+      padding: 10px 20px;
+      display: inline-block;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  const currentUser = localStorage.getItem("currentUser");
+  if (!currentUser) {
+    alert("Please login first!");
+    window.location.href = "login.html";
+  }
+</script>
+
+<h2>Deposit Coins</h2>
+<p>Select a deposit method</p>
+
+<div class="deposit-option" onclick="deposit('Bkash')">Deposit via Bkash</div>
+<div class="deposit-option" onclick="deposit('Nagad')">Deposit via Nagad</div>
+
+<a href="game.html" class="back-btn">← Back to Game</a>
+
+<script>
+  function deposit(method) {
+    const username = localStorage.getItem("currentUser");
+    if (!username) {
+      alert("Please login first.");
+      window.location.href = "login.html";
+      return;
+    }
+
+    const userData = JSON.parse(localStorage.getItem(username));
+    const depositAmount = 100;
+
+    userData.coins += depositAmount;
+    localStorage.setItem(username, JSON.stringify(userData));
+
+    alert(`Successfully added ${depositAmount} coins via ${method}.`);
+    window.location.href = "game.html";
+  }
+</script>
+
+</body>
+</html>

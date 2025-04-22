@@ -1,0 +1,59 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - My Casino</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Login to My Casino</h1>
+
+        <input type="text" id="username" placeholder="Enter username" />
+        <br><br>
+        <input type="password" id="password" placeholder="Enter password" />
+        <br><br>
+        <button onclick="login()">Login</button>
+
+        <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+    </div>
+
+    <script>
+        function login() {
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value;
+
+            if (!username || !password) {
+                alert("Please fill both fields.");
+                return;
+            }
+
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters.");
+                return;
+            }
+
+            const existing = localStorage.getItem(username);
+
+            if (!existing) {
+                const userData = {
+                    password: password,
+                    coins: 0
+                };
+                localStorage.setItem(username, JSON.stringify(userData));
+                alert("Account created! Logging in...");
+            } else {
+                const userData = JSON.parse(existing);
+                if (userData.password !== password) {
+                    alert("Wrong password!");
+                    return;
+                }
+            }
+
+            localStorage.setItem("currentUser", username);
+            window.location.href = "dashboard.html";
+        }
+    </script>
+</body>
+</html>

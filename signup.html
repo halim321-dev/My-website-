@@ -1,0 +1,59 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up - My Casino</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Create an Account</h1>
+    <form class="form" onsubmit="signup(event)">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password (min 6 chars)" required>
+      <button type="submit" class="btn">Sign Up</button>
+    </form>
+    <div class="back-home">
+      <a href="index.html">← Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    function signup(e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!username || !email || !password) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      if (password.length < 6) {
+        alert("Password must be at least 6 characters.");
+        return;
+      }
+
+      if (localStorage.getItem(username)) {
+        alert("Username already exists!");
+        return;
+      }
+
+      const userData = {
+        email,
+        password,
+        coins: 50  // Initial bonus
+      };
+
+      localStorage.setItem(username, JSON.stringify(userData));
+      localStorage.setItem("currentUser", username);
+
+      alert("Account created successfully!");
+      window.location.href = "profile.html";
+    }
+  </script>
+</body>
+</html>

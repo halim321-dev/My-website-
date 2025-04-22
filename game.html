@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Casino Game</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f0f0f0;
+      text-align: center;
+      padding: 20px;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .top-bar .logo {
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .top-bar .actions a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+    }
+    .game-list {
+      margin-top: 40px;
+    }
+    .game-link {
+      display: block;
+      margin: 20px auto;
+      padding: 15px 30px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <script>
+    const currentUser = localStorage.getItem("currentUser");
+    if (!currentUser) {
+      alert("Please login first!");
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <div class="top-bar">
+    <div class="logo">CasinoZone</div>
+    <div class="actions">
+      <span id="coinDisplay">Coins: 0</span>
+      <a href="deposit.html">Deposit Coins</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+  </div>
+
+  <div class="game-list">
+    <h1>Casino Games</h1>
+    <a href="coin-flip.html" class="game-link">Coin Flip</a>
+    a href="slot.html" class="game-link">Slot Machine</a>
+    <!-- ভবিষ্যতে অন্য গেমগুলোর লিংক এখানে যোগ করতে পারো -->
+  </div>
+
+  <script>
+    function updateCoins() {
+      const username = localStorage.getItem("currentUser");
+      const userData = JSON.parse(localStorage.getItem(username));
+      if (userData && userData.coins !== undefined) {
+        document.getElementById("coinDisplay").innerText = "Coins: " + userData.coins;
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("currentUser");
+      alert("Logged out successfully!");
+      window.location.href = "index.html";
+    }
+
+    updateCoins();
+    setInterval(updateCoins, 2000);
+  </script>
+
+</body>
+</html>

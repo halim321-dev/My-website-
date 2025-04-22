@@ -1,0 +1,133 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Slot Game - My Casino</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #1e1e1e;
+      color: white;
+      padding: 50px;
+    }
+
+    h2 {
+      font-size: 32px;
+    }
+
+    .slot-box {
+      display: flex;
+      justify-content: center;
+      font-size: 60px;
+      margin: 20px 0;
+    }
+
+    .slot {
+      margin: 0 10px;
+      padding: 20px;
+      background: #333;
+      border-radius: 10px;
+      width: 80px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background: #00b894;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .btn:hover {
+      background: #019875;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+
+    .coin-info {
+      margin: 20px 0;
+      font-size: 18px;
+    }
+
+    .back-btn {
+      margin-top: 40px;
+      display: inline-block;
+      padding: 10px 20px;
+      background: #555;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Slot Machine</h2>
+
+  <div class="coin-info">
+    Your Coins: <span id="coin-count">0</span>
+  </div>
+
+  <div class="slot-box">
+    <div class="slot" id="slot1">🍒</div>
+    <div class="slot" id="slot2">🍒</div>
+    <div class="slot" id="slot3">🍒</div>
+  </div>
+
+  <button class="btn" onclick="spin()">Spin (Cost: 10 coins)</button>
+
+  <div class="result" id="result"></div>
+
+  <br>
+  <a href="dashboard.html" class="back-btn">Back to Dashboard</a>
+
+  <script>
+    const user = localStorage.getItem("currentUser");
+    const data = JSON.parse(localStorage.getItem(user));
+    let coins = data?.coins || 0;
+
+    const coinCount = document.getElementById("coin-count");
+    coinCount.textContent = coins;
+
+    const symbols = ["🍒", "🍋", "🍊", "⭐", "7️⃣"];
+
+    function spin() {
+      if (coins < 10) {
+        alert("Not enough coins!");
+        return;
+      }
+
+      coins -= 10;
+
+      const s1 = symbols[Math.floor(Math.random() * symbols.length)];
+      const s2 = symbols[Math.floor(Math.random() * symbols.length)];
+      const s3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+      document.getElementById("slot1").textContent = s1;
+      document.getElementById("slot2").textContent = s2;
+      document.getElementById("slot3").textContent = s3;
+
+      let result = document.getElementById("result");
+
+      if (s1 === s2 && s2 === s3) {
+        coins += 50;
+        result.textContent = "Jackpot! You won 50 coins!";
+      } else if (s1 === s2 || s2 === s3 || s1 === s3) {
+        coins += 20;
+        result.textContent = "Great! You won 20 coins!";
+      } else {
+        result.textContent = "Try again!";
+      }
+
+      coinCount.textContent = coins;
+      data.coins = coins;
+      localStorage.setItem(user, JSON.stringify(data));
+    }
+  </script>
+</body>
+</html>

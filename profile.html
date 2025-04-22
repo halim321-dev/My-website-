@@ -1,0 +1,102 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile - My Casino</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: #1a1a1a;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .profile-container {
+      max-width: 500px;
+      margin: auto;
+      background: #2a2a2a;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #000;
+    }
+
+    .profile-container h2 {
+      font-size: 32px;
+      color: #00ffc8;
+      margin-bottom: 20px;
+    }
+
+    .profile-pic-box {
+      margin: 20px 0;
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #4CAF50, #2196F3);
+      color: white;
+      font-size: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      border: 2px solid white;
+      margin: auto;
+    }
+
+    .coin-box {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+
+    .buttons .btn {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+
+    .buttons .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <section class="profile-container">
+    <h2>Welcome, <span id="username-display"></span></h2>
+
+    <!-- Profile Avatar without Image -->
+    <div class="profile-pic-box">
+      <div id="profile-avatar" class="profile-avatar">U</div>
+    </div>
+
+    <div class="coin-box">
+      Your Coins: <span id="coin-count">0</span>
+    </div>
+
+    <div class="buttons">
+      <a href="index.html" class="btn">Back to Home</a>
+      <a href="logout.html" class="btn">Logout</a>
+    </div>
+  </section>
+
+  <script>
+    // ইউজারের তথ্য লোকাল স্টোরেজ থেকে আনা
+    const username = localStorage.getItem("username") || "Guest";
+    const coins = localStorage.getItem("coins") || "0";
+
+    // ইউজারের নাম ও কয়েন দেখানো
+    document.getElementById("username-display").textContent = username;
+    document.getElementById("coin-count").textContent = coins;
+
+    // নামের প্রথম অক্ষর দিয়ে প্রোফাইল বৃত্ত বানানো
+    const firstLetter = username.charAt(0).toUpperCase();
+    document.getElementById("profile-avatar").textContent = firstLetter;
+  </script>
+</body>
+</html>

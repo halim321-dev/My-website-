@@ -1,0 +1,93 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      text-align: center;
+    }
+    input {
+      margin: 5px;
+      padding: 5px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #0099ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Admin Panel</h2>
+
+  <input type="text" id="adminUser" placeholder="Username" />
+  <input type="number" id="adminCoins" placeholder="Coins" />
+
+  <br>
+
+  <button onclick="addCoins()">Add Coins</button>
+  <button onclick="removeCoins()">Remove Coins</button>
+
+  <p id="adminResult"></p>
+
+  <script>
+    function addCoins() {
+      const username = document.getElementById("adminUser").value;
+      const coins = parseInt(document.getElementById("adminCoins").value);
+
+      let userData = JSON.parse(localStorage.getItem(username));
+      if (userData) {
+        userData.coins += coins;
+        localStorage.setItem(username, JSON.stringify(userData));
+        document.getElementById("adminResult").innerText = "Coins added successfully.";
+
+        logTransaction(username, "Add", coins);
+      } else {
+        document.getElementById("adminResult").innerText = "User not found!";
+      }
+    }
+
+    function removeCoins() {
+      const username = document.getElementById("adminUser").value;
+      const coins = parseInt(document.getElementById("adminCoins").value);
+
+      let userData = JSON.parse(localStorage.getItem(username));
+      if (userData) {
+        const removed = Math.min(coins, userData.coins);
+        userData.coins -= removed;
+        localStorage.setItem(username, JSON.stringify(userData));
+        document.getElementById("adminResult").innerText = "Coins removed.";
+
+        logTransaction(username, "Remove", removed);
+      } else {
+        document.getElementById("adminResult").innerText = "User not found!";
+      }
+    }
+
+    function logTransaction(username, type, amount) {
+      const logKey = `${username}_log`;
+      const existingLogs = JSON.parse(localStorage.getItem(logKey)) || [];
+      const newEntry = {
+        type: type,
+        amount: amount,
+        time: new Date().toLocaleString()
+      };
+      existingLogs.push(newEntry);
+      localStorage.setItem(logKey, JSON.stringify(existingLogs));
+    }
+
+    function logout() {
+      localStorage.removeItem("currentUser");
+      alert("Logged out successfully!");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Logging Out...</title>
+  <script>
+    // লগআউট করার সময় লোকাল স্টোরেজ থেকে ইউজার ডেটা সরানো
+    localStorage.removeItem("currentUser");
+    // চাইলে প্রোফাইল পিকচার বা অন্য তথ্যও রিমুভ করতে পারো
+    // localStorage.removeItem("profilePic");
+
+    // রিডাইরেক্ট login পেজে
+    window.location.href = "login.html";
+  </script>
+</head>
+<body>
+</body>
+</html>

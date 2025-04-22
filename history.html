@@ -1,0 +1,25 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Coin History</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Coin Transaction History</h2>
+  <ul id="logList"></ul>
+
+  <script>
+    const username = localStorage.getItem("currentUser");
+    const logKey = `${username}_log`;
+    const logs = JSON.parse(localStorage.getItem(logKey)) || [];
+
+    const logList = document.getElementById("logList");
+    logs.forEach(entry => {
+      const li = document.createElement("li");
+      li.innerText = `${entry.type} - ${entry.amount} coins on ${entry.time}`;
+      logList.appendChild(li);
+    });
+  </script>
+</body>
+</html>
